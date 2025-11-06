@@ -21,8 +21,15 @@
         </label>
       </div>
       
+      <div class="chain-section">
+        <label for="chainSelect" class="section-label">Active Chain:</label>
+        <select id="chainSelect" class="chain-select" disabled>
+          <option value="">No chains available</option>
+        </select>
+      </div>
+      
       <div class="status-section">
-        <p id="statusText">Proxy is disabled</p>
+        <p id="statusText">Inactive</p>
       </div>
       
       <div class="action-section">
@@ -32,6 +39,6 @@
     </main>
   </div>
   
-  <script src="popup.js"></script>
+  <script type="module" src="popup.js"></script>
 </body>
 </html>
