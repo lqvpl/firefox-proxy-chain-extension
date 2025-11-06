@@ -10,6 +10,10 @@
     "notifications"
   ],
   
+  "optional_permissions": [
+    "sockets.tcp"
+  ],
+  
   "host_permissions": [
     "<all_urls>"
   ],
