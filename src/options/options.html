@@ -3,78 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebExtension Options</title>
+  <title>Proxy Chain Manager</title>
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <div class="options-container">
     <header>
-      <h1>WebExtension Options</h1>
+      <h1>Proxy Chain Manager</h1>
     </header>
     
     <main>
-      <section class="settings-section">
-        <h2>Proxy Settings</h2>
-        
-        <div class="form-group">
-          <label for="proxyType">Proxy Type:</label>
-          <select id="proxyType">
-            <option value="http">HTTP</option>
-            <option value="https">HTTPS</option>
-            <option value="socks4">SOCKS4</option>
-            <option value="socks5">SOCKS5</option>
-          </select>
+      <section class="chains-section">
+        <div class="section-header">
+          <h2>Proxy Chains</h2>
+          <button id="addNewChainBtn" class="btn btn-primary">Add New Chain</button>
         </div>
         
-        <div class="form-group">
-          <label for="proxyHost">Proxy Host:</label>
-          <input type="text" id="proxyHost" placeholder="example.com">
+        <div id="chainsList" class="chains-list">
+          <!-- Chains will be dynamically loaded here -->
         </div>
         
-        <div class="form-group">
-          <label for="proxyPort">Proxy Port:</label>
-          <input type="number" id="proxyPort" placeholder="8080" min="1" max="65535">
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <p>No proxy chains configured yet.</p>
+          <p>Click "Add New Chain" to get started.</p>
         </div>
-        
-        <div class="form-group">
-          <label for="proxyUsername">Username (optional):</label>
-          <input type="text" id="proxyUsername">
-        </div>
-        
-        <div class="form-group">
-          <label for="proxyPassword">Password (optional):</label>
-          <input type="password" id="proxyPassword">
-        </div>
-      </section>
-      
-      <section class="settings-section">
-        <h2>General Settings</h2>
-        
-        <div class="form-group">
-          <label class="checkbox-label">
-            <input type="checkbox" id="autoStart">
-            <span class="checkmark"></span>
-            Enable proxy on browser start
-          </label>
-        </div>
-        
-        <div class="form-group">
-          <label class="checkbox-label">
-            <input type="checkbox" id="showNotifications">
-            <span class="checkmark"></span>
-            Show connection notifications
-          </label>
-        </div>
-      </section>
-      
-      <section class="actions-section">
-        <button id="saveButton" class="btn btn-primary">Save Settings</button>
-        <button id="resetButton" class="btn btn-secondary">Reset to Default</button>
-        <div id="statusMessage" class="status-message"></div>
       </section>
     </main>
   </div>
   
-  <script src="options.js"></script>
+  <!-- Chain Editor Modal -->
+  <div id="chainEditorModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Edit Chain</h3>
+        <button id="closeModalBtn" class="close-btn">&times;</button>
+      </div>
+      
+      <form id="chainEditorForm">
+        <div class="form-group">
+          <label for="chainName">Chain Name *</label>
+          <input type="text" id="chainName" required>
+          <div class="error-message" id="chainNameError"></div>
+        </div>
+        
+        <div class="form-group">
+          <label>Proxy Servers *</label>
+          <div id="proxiesList" class="proxies-list">
+            <!-- Proxies will be dynamically added here -->
+          </div>
+          
+          <button type="button" id="addProxyBtn" class="btn btn-secondary">Add Proxy</button>
+          <div class="error-message" id="proxiesError"></div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Chain</button>
+          <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h3>Confirm Deletion</h3>
+      </div>
+      
+      <div class="modal-body">
+        <p>Are you sure you want to delete the chain "<span id="deleteChainName"></span>"?</p>
+        <p>This action cannot be undone.</p>
+      </div>
+      
+      <div class="form-actions">
+        <button id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+        <button id="cancelDeleteBtn" class="btn btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Status Message -->
+  <div id="statusMessage" class="status-message"></div>
+  
+  <script type="module" src="options.js"></script>
 </body>
 </html>
