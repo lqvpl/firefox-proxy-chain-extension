@@ -7,11 +7,21 @@ import {
   loadChains 
 } from '../storage.js';
 
+import { ProxyChainEngine } from '../chainEngine.js';
+
 let currentProxyState = {
   enabled: false,
   activeChainId: null,
   activeChain: null
 };
+
+// Initialize proxy chain engine
+let proxyChainEngine = new ProxyChainEngine({
+  connectionTimeout: 30000,
+  totalTimeout: 120000,
+  enableLogging: true,
+  maxRetries: 2
+});
 
 // Handle extension installation
 chrome.runtime.onInstalled.addListener(async (details) => {
@@ -41,26 +51,50 @@ async function loadCurrentState() {
 // Update proxy settings based on current state
 function updateProxySettings() {
   if (currentProxyState.enabled && currentProxyState.activeChain) {
-    console.log('Setting up proxy for chain:', currentProxyState.activeChain.name);
-    // TODO: Implement actual proxy configuration
-    // For now, we'll just log the intent
+    console.log('Proxy enabled for chain:', currentProxyState.activeChain.name);
+    console.log('Chain contains', currentProxyState.activeChain.proxies.length, 'proxy(ies)');
+    
+    // The actual proxy configuration is handled by chrome.proxy.onRequest listener
+    // which will use the first proxy in the chain for Firefox proxy API integration
   } else {
     console.log('Proxy disabled or no active chain');
   }
 }
 
 // Proxy request listener
-chrome.proxy.onRequest.addListener((requestInfo) => {
+chrome.proxy.onRequest.addListener(async (requestInfo) => {
   console.log('Proxy request intercepted:', requestInfo);
   
   // Check if proxy is enabled and we have an active chain
   if (currentProxyState.enabled && currentProxyState.activeChain) {
-    // TODO: Implement actual proxy logic using activeChain.proxies
-    // For now, return direct connection
-    console.log('Proxy would be used for:', requestInfo);
-    return {
-      type: "direct"
-    };
+    try {
+      console.log('Using proxy chain:', currentProxyState.activeChain.name);
+      
+      // For Firefox proxy API, we can only configure the first hop
+      // The chain engine handles the rest through socket connections
+      const firstProxy = currentProxyState.activeChain.proxies[0];
+      
+      if (firstProxy) {
+        console.log(`Configuring Firefox to use first proxy: ${firstProxy.address}:${firstProxy.port}`);
+        
+        // Configure Firefox to use the first proxy in the chain
+        const proxyConfig = {
+          type: firstProxy.type.toLowerCase(),
+          host: firstProxy.address,
+          port: firstProxy.port
+        };
+        
+        // Add authentication if provided
+        if (firstProxy.username && firstProxy.password) {
+          proxyConfig.username = firstProxy.username;
+          proxyConfig.password = firstProxy.password;
+        }
+        
+        return proxyConfig;
+      }
+    } catch (error) {
+      console.error('Error configuring proxy:', error);
+    }
   }
   
   // No proxy configured, use direct connection
@@ -152,14 +186,25 @@ async function handleTestConnection(chainId) {
       return { success: false, error: 'Chain not found' };
     }
     
-    // TODO: Implement actual connection testing
-    // For now, simulate a successful test
-    console.log('Connection test for chain:', chain.name);
+    // Test connection using chain engine
+    console.log('Testing connection through chain:', chain.name);
     
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Use a common test target (like Google DNS)
+    const testTarget = '8.8.8.8';
+    const testPort = 53;
     
-    return { success: true };
+    const connectionResult = await proxyChainEngine.buildChain(chain, testTarget, testPort);
+    
+    // Test successful, clean up connection
+    if (connectionResult.socket) {
+      connectionResult.socket.close();
+    }
+    
+    return { 
+      success: true, 
+      connectionInfo: connectionResult.connectionInfo,
+      message: `Successfully connected to ${testTarget}:${testPort} through ${chain.proxies.length} proxy(ies)`
+    };
     
   } catch (error) {
     console.error('Connection test failed:', error);

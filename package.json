@@ -2,6 +2,7 @@
   "name": "firefox-webextension",
   "version": "1.0.0",
   "description": "A Firefox WebExtension with proxy capabilities",
+  "type": "module",
   "main": "src/background/background.js",
   "scripts": {
     "build": "echo 'No build process configured'",
