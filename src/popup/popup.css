@@ -31,6 +31,43 @@ header h1 {
   margin-bottom: 16px;
 }
 
+.chain-section {
+  margin-bottom: 16px;
+}
+
+.section-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5f6368;
+  margin-bottom: 6px;
+}
+
+.chain-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  color: #202124;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.chain-select:focus {
+  outline: none;
+  border-color: #0060df;
+  box-shadow: 0 0 0 2px rgba(0, 96, 223, 0.2);
+}
+
+.chain-select:disabled {
+  background-color: #f8f9fa;
+  color: #5f6368;
+  cursor: not-allowed;
+  border-color: #e0e0e0;
+}
+
 .toggle-label {
   display: flex;
   align-items: center;
@@ -81,7 +118,23 @@ header h1 {
 
 #statusText {
   font-size: 13px;
+  font-weight: 500;
+}
+
+.status-inactive {
   color: #666;
+}
+
+.status-active {
+  color: #137333;
+}
+
+.status-warning {
+  color: #b06000;
+}
+
+.status-error {
+  color: #d93025;
 }
 
 .action-section {
