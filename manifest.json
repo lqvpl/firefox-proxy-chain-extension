@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Firefox WebExtension",
+  "version": "1.0.0",
+  "description": "A Firefox WebExtension with proxy capabilities",
+  
+  "permissions": [
+    "proxy",
+    "storage",
+    "notifications"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
+  "background": {
+    "service_worker": "src/background/background.js",
+    "type": "module"
+  },
+  
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "WebExtension",
+    "default_icon": {
+      "16": "src/icons/icon-16.svg",
+      "32": "src/icons/icon-32.svg",
+      "48": "src/icons/icon-48.svg",
+      "128": "src/icons/icon-128.svg"
+    }
+  },
+  
+  "options_page": "src/options/options.html",
+  
+  "icons": {
+    "16": "src/icons/icon-16.svg",
+    "32": "src/icons/icon-32.svg",
+    "48": "src/icons/icon-48.svg",
+    "128": "src/icons/icon-128.svg"
+  }
+}
