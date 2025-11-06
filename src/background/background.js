@@ -1,5 +1,7 @@
 // Background service worker for Firefox WebExtension
 
+import { initializeStorage } from '../storage.js';
+
 // Proxy request listener
 chrome.proxy.onRequest.addListener((requestInfo) => {
   console.log('Proxy request intercepted:', requestInfo);
@@ -12,14 +14,15 @@ chrome.proxy.onRequest.addListener((requestInfo) => {
 });
 
 // Handle extension installation
-chrome.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener(async (details) => {
   console.log('Extension installed:', details);
   
-  // Initialize default settings
-  chrome.storage.local.set({
-    proxyEnabled: false,
-    proxySettings: {}
-  });
+  try {
+    await initializeStorage();
+    console.log('Storage initialized successfully');
+  } catch (error) {
+    console.error('Failed to initialize storage:', error);
+  }
 });
 
 // Handle messages from popup and options
