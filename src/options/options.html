@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebExtension Options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="options-container">
+    <header>
+      <h1>WebExtension Options</h1>
+    </header>
+    
+    <main>
+      <section class="settings-section">
+        <h2>Proxy Settings</h2>
+        
+        <div class="form-group">
+          <label for="proxyType">Proxy Type:</label>
+          <select id="proxyType">
+            <option value="http">HTTP</option>
+            <option value="https">HTTPS</option>
+            <option value="socks4">SOCKS4</option>
+            <option value="socks5">SOCKS5</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="proxyHost">Proxy Host:</label>
+          <input type="text" id="proxyHost" placeholder="example.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="proxyPort">Proxy Port:</label>
+          <input type="number" id="proxyPort" placeholder="8080" min="1" max="65535">
+        </div>
+        
+        <div class="form-group">
+          <label for="proxyUsername">Username (optional):</label>
+          <input type="text" id="proxyUsername">
+        </div>
+        
+        <div class="form-group">
+          <label for="proxyPassword">Password (optional):</label>
+          <input type="password" id="proxyPassword">
+        </div>
+      </section>
+      
+      <section class="settings-section">
+        <h2>General Settings</h2>
+        
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="autoStart">
+            <span class="checkmark"></span>
+            Enable proxy on browser start
+          </label>
+        </div>
+        
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="showNotifications">
+            <span class="checkmark"></span>
+            Show connection notifications
+          </label>
+        </div>
+      </section>
+      
+      <section class="actions-section">
+        <button id="saveButton" class="btn btn-primary">Save Settings</button>
+        <button id="resetButton" class="btn btn-secondary">Reset to Default</button>
+        <div id="statusMessage" class="status-message"></div>
+      </section>
+    </main>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

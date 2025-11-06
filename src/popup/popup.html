@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebExtension Popup</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header>
+      <h1>WebExtension</h1>
+    </header>
+    
+    <main>
+      <div class="toggle-section">
+        <label class="toggle-label">
+          <input type="checkbox" id="proxyToggle">
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">Enable Proxy</span>
+        </label>
+      </div>
+      
+      <div class="status-section">
+        <p id="statusText">Proxy is disabled</p>
+      </div>
+      
+      <div class="action-section">
+        <button id="optionsButton" class="btn btn-secondary">Options</button>
+        <button id="testButton" class="btn btn-primary">Test Connection</button>
+      </div>
+    </main>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

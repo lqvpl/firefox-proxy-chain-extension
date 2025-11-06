@@ -1,0 +1,21 @@
+{
+  "name": "firefox-webextension",
+  "version": "1.0.0",
+  "description": "A Firefox WebExtension with proxy capabilities",
+  "main": "src/background/background.js",
+  "scripts": {
+    "build": "echo 'No build process configured'",
+    "lint": "echo 'No linting configured'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "firefox",
+    "webextension",
+    "proxy",
+    "manifest-v3"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
